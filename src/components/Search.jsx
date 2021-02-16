@@ -32,7 +32,7 @@ const Search = () => {
 
   React.useEffect(() => {
     axios
-      .get(`http://api.tvmaze.com/search/shows?q=${query}`)
+      .get(`https://api.tvmaze.com/search/shows?q=${query}`)
       .then((response) => {
         setTvShows(response.data);
       })
