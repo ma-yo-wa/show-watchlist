@@ -6,18 +6,22 @@ import { Link } from "react-router-dom";
 const Images = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: center;
 `;
 
 const Image = styled.div`
-  margin-bottom: 20px;
+  padding: 20px;
 `;
 
 const Input = styled.input`
-  width: 400px;
+  width: 40%;
   height: 30px;
   vertical-align: middle;
   margin-bottom: 40px;
+
+  @media (max-width: 640px) {
+    width: 100%;
+  }
 `;
 
 const InputContainer = styled.div`
@@ -28,7 +32,8 @@ const InputContainer = styled.div`
 const Search = () => {
   const [query, setQuery] = React.useState("");
   const [tvShows, setTvShows] = React.useState([]);
-  const dummyImage = "https://ipsumimage.appspot.com/210x295?l=No%20Image%20Found";
+  const dummyImage =
+    "https://ipsumimage.appspot.com/210x295?l=No%20Image%20Found";
 
   React.useEffect(() => {
     axios
@@ -44,32 +49,35 @@ const Search = () => {
   return (
     <>
       <InputContainer>
-        <Input onChange={(e) => setQuery(e.target.value)} />
+        <Input
+          onChange={(e) => setQuery(e.target.value)}
+          placeholder="Search for shows"
+        />
       </InputContainer>
       <Images>
-        {tvShows.map((tvShow) =>
-          !tvShow.show.image?.medium ? (
+        {tvShows.map((tvShow) => (
+          <Link
+            key={tvShow.show.id}
+            to={{
+              pathname: `/show`,
+              state: {
+                image: tvShow.show.image
+                  ? tvShow.show.image?.medium
+                  : dummyImage,
+                title: tvShow.show.name,
+                type: tvShow.show.type,
+                summary: tvShow.show.summary,
+              },
+            }}
+          >
             <Image>
-              <img src={dummyImage} alt="" />
+              <img
+                src={tvShow.show.image ? tvShow.show.image?.medium : dummyImage}
+                alt={tvShow.show.name}
+              />
             </Image>
-          ) : (
-            <Link
-              to={{
-                pathname: `/show`,
-                state: {
-                  image: tvShow.show.image?.medium,
-                  title: tvShow.show.name,
-                  type: tvShow.show.type,
-                  summary: tvShow.show.summary,
-                },
-              }}
-            >
-              <Image>
-                <img src={tvShow.show.image?.medium} alt="" />
-              </Image>
-            </Link>
-          )
-        )}
+          </Link>
+        ))}
       </Images>
     </>
   );

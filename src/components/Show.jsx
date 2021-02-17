@@ -4,7 +4,6 @@ import { withRouter } from "react-router-dom";
 
 const Container = styled.div`
   display: flex;
-  justify-content: space-between;
 `;
 
 const Summary = styled.div`
@@ -25,25 +24,38 @@ const Image = styled.img`
 
 const Show = ({ location }) => {
   const show = location.state;
-  const [isShowAdded, setIsShowAdded] = React.useState(false);
+  const [isShowOnWatchlist, setiSShowOnWatchlist] = React.useState(false);
 
-  console.log(show.image, "here");
+  React.useEffect(() => {
+    const watchlist = localStorage.getItem("watchlist");
+
+    if (!watchlist) {
+      setiSShowOnWatchlist(false);
+    } else {
+      JSON.parse(localStorage.getItem("watchlist")).includes(show.image)
+        ? setiSShowOnWatchlist(true)
+        : setiSShowOnWatchlist(false);
+    }
+  }, [show]);
 
   const addToWatchlist = () => {
-    let shows = localStorage.getItem("shows");
-    shows = !!shows ? JSON.parse(localStorage.getItem("shows")) : [];
-    shows.push(show.image);
+    let watchlist = localStorage.getItem("watchlist");
+    watchlist = watchlist ? JSON.parse(localStorage.getItem("watchlist")) : [];
+    watchlist.push(show.image);
 
-    localStorage.setItem("shows", JSON.stringify(shows));
-
-    setIsShowAdded(true);
+    localStorage.setItem("watchlist", JSON.stringify(watchlist));
+    setiSShowOnWatchlist(true);
   };
 
   const removeFromWatchList = () => {
-    let watchlist = localStorage.getItem("show");
+    let watchlist = localStorage.getItem("watchlist");
     watchlist = JSON.parse(watchlist);
-    localStorage.setItem("shows", JSON.stringify(watchlist.pop));
-    setIsShowAdded(false);
+
+    const index = watchlist.indexOf(show.image);
+    watchlist.splice(index, 1);
+
+    localStorage.setItem("watchlist", JSON.stringify(watchlist));
+    setiSShowOnWatchlist(false);
   };
 
   return (
@@ -51,12 +63,12 @@ const Show = ({ location }) => {
       <Container>
         <Image src={show.image} alt="" />
         <div>
-          <p style={{marginTop: 0}}>{show.title}</p>
+          <p style={{ marginTop: 0 }}>{show.title}</p>
           <b>{show.type}</b>
           <Summary dangerouslySetInnerHTML={{ __html: show.summary }} />
         </div>
       </Container>
-      {isShowAdded ? (
+      {isShowOnWatchlist ? (
         <Button onClick={removeFromWatchList}>Remove from the list</Button>
       ) : (
         <Button onClick={addToWatchlist}>Add To Watchlist</Button>
