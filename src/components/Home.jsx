@@ -12,11 +12,12 @@ const Container = styled.div`
 `;
 
 const Home = () => {
-  const watchlist = JSON.parse(localStorage.getItem("watchlist"));
+  // watchlist is null until it is modified in /show and then becomes an array
+  const watchlist = JSON.parse(localStorage.getItem("watchlist")) || [];
 
   return (
     <>
-      {(Array.isArray(watchlist) ? watchlist.length : watchlist) ? ( // watchlist can be null when watchlist isn't dirty or an array if it is
+      {watchlist.length ? (
         <Container>
           {watchlist.map((show, id) => (
             <Watchlist key={id}>
