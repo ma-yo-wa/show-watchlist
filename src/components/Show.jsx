@@ -1,9 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 import { withRouter } from "react-router-dom";
+import addToLocalStorage from "../utils/addToLocalStorage";
+import removeFromLocalStorage from "../utils/removeFromLocalStorage";
 
 const Container = styled.div`
   display: flex;
+
+  @media screen and (max-width: 640px) {
+    flex-direction: column;
+  }
 `;
 
 const Summary = styled.div`
@@ -38,23 +44,13 @@ const Show = ({ location }) => {
     }
   }, [show]);
 
-  const addToWatchlist = () => {
-    let watchlist = localStorage.getItem("watchlist");
-    watchlist = watchlist ? JSON.parse(localStorage.getItem("watchlist")) : [];
-    watchlist.push(show.image);
-
-    localStorage.setItem("watchlist", JSON.stringify(watchlist));
+  const addToWatchlist = (image) => {
+    addToLocalStorage(image);
     setiSShowOnWatchlist(true);
   };
 
-  const removeFromWatchList = () => {
-    let watchlist = localStorage.getItem("watchlist");
-    watchlist = JSON.parse(watchlist);
-
-    const index = watchlist.indexOf(show.image);
-    watchlist.splice(index, 1);
-
-    localStorage.setItem("watchlist", JSON.stringify(watchlist));
+  const removeFromWatchList = (image) => {
+    removeFromLocalStorage(image);
     setiSShowOnWatchlist(false);
   };
 
@@ -69,9 +65,13 @@ const Show = ({ location }) => {
         </div>
       </Container>
       {isShowOnWatchlist ? (
-        <Button onClick={removeFromWatchList}>Remove from the list</Button>
+        <Button onClick={() => removeFromWatchList(show.image)}>
+          Remove from Watchlist
+        </Button>
       ) : (
-        <Button onClick={addToWatchlist}>Add To Watchlist</Button>
+        <Button onClick={() => addToWatchlist(show.image)}>
+          Add To Watchlist
+        </Button>
       )}
     </>
   );

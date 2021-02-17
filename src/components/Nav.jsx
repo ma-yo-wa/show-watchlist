@@ -15,7 +15,7 @@ const StyledLink = styled(NavLink)`
   margin-right: 30px;
   text-decoration: none;
   color: black;
-  &.${props => props.activeClassName} {
+  &.${(props) => props.activeClassName} {
     color: blue;
   }
 `;
@@ -33,7 +33,9 @@ const Nav = () => {
         <StyledLink activeClassName="active" exact to="/">
           Home
         </StyledLink>
-        <StyledLink activeClassName="active" to="/search">Search</StyledLink>
+        <StyledLink activeClassName="active" to="/search">
+          Search
+        </StyledLink>
       </Links>
       <Divider />
     </Container>

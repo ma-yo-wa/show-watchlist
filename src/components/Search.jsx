@@ -16,22 +16,24 @@ const Image = styled.div`
 const Input = styled.input`
   width: 40%;
   height: 30px;
-  vertical-align: middle;
-  margin-bottom: 40px;
 
   @media (max-width: 640px) {
     width: 100%;
+    font-size: 16px;
   }
 `;
 
 const InputContainer = styled.div`
+  margin-bottom: 40px;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
 `;
 
 const Search = () => {
   const [query, setQuery] = React.useState("");
   const [tvShows, setTvShows] = React.useState([]);
+  const [error, setError] = React.useState("");
   const dummyImage =
     "https://ipsumimage.appspot.com/210x295?l=No%20Image%20Found";
 
@@ -40,11 +42,15 @@ const Search = () => {
       .get(`https://api.tvmaze.com/search/shows?q=${query}`)
       .then((response) => {
         setTvShows(response.data);
+
+        if (error) {
+          setError(false);
+        }
       })
       .catch((error) => {
-        console.error("There was an error!", error);
+        setError(error.message);
       });
-  }, [query]);
+  }, [query, error]);
 
   return (
     <>
@@ -53,6 +59,7 @@ const Search = () => {
           onChange={(e) => setQuery(e.target.value)}
           placeholder="Search for shows"
         />
+        {error && <p style={{ color: "red" }}>{error}</p>}
       </InputContainer>
       <Images>
         {tvShows.map((tvShow) => (

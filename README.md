@@ -1,16 +1,14 @@
 # Getting Started with Show Watchlist App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This [app](https://show-watchlist.vercel.app/) allows a user to search for TV shows, view a show's info and add the show to their watchlist.
 
-## Available Scripts
+## Getting started
 
-In the project directory, you can run:
+You can view a live demo at https://show-watchlist.vercel.app
 
-### `yarn start`
+To get the app running locally:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
-
+- Clone this repo
+- `yarn install` to install all req'd dependencies
+- `yarn start` to start the local server (this project uses create-react-app)
+- Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
