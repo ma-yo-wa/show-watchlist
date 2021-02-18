@@ -22,7 +22,7 @@ const Home = () => {
         <Container>
           {watchlist.map((show, id) => (
             <Link
-              key={show.id}
+              key={id}
               to={{
                 pathname: `/show`,
                 state: {
@@ -33,7 +33,7 @@ const Home = () => {
                 },
               }}
             >
-              <Watchlist key={show.id}>
+              <Watchlist key={id}>
                 <img src={show.image} alt={show.name} />
               </Watchlist>
             </Link>
