@@ -1,5 +1,6 @@
 import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
 const Watchlist = styled.div`
   padding: 20px;
@@ -20,9 +21,22 @@ const Home = () => {
       {watchlist.length ? (
         <Container>
           {watchlist.map((show, id) => (
-            <Watchlist key={id}>
-              <img src={show} alt="" />
-            </Watchlist>
+            <Link
+              key={show.id}
+              to={{
+                pathname: `/show`,
+                state: {
+                  image: show.image,
+                  title: show.title,
+                  type: show.type,
+                  summary: show.summary,
+                },
+              }}
+            >
+              <Watchlist key={show.id}>
+                <img src={show.image} alt={show.name} />
+              </Watchlist>
+            </Link>
           ))}
         </Container>
       ) : (

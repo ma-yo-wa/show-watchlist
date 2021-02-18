@@ -38,14 +38,16 @@ const Show = ({ location }) => {
     if (!watchlist) {
       setiSShowOnWatchlist(false);
     } else {
-      JSON.parse(localStorage.getItem("watchlist")).includes(show.image)
+      JSON.parse(localStorage.getItem("watchlist"))
+        .map((savedShow) => savedShow.image)
+        .includes(show.image)
         ? setiSShowOnWatchlist(true)
         : setiSShowOnWatchlist(false);
     }
   }, [show]);
 
-  const addToWatchlist = (image) => {
-    addToLocalStorage(image);
+  const addToWatchlist = (show) => {
+    addToLocalStorage(show);
     setiSShowOnWatchlist(true);
   };
 
@@ -65,13 +67,11 @@ const Show = ({ location }) => {
         </div>
       </Container>
       {isShowOnWatchlist ? (
-        <Button onClick={() => removeFromWatchList(show.image)}>
+        <Button onClick={() => removeFromWatchList(show)}>
           Remove from Watchlist
         </Button>
       ) : (
-        <Button onClick={() => addToWatchlist(show.image)}>
-          Add To Watchlist
-        </Button>
+        <Button onClick={() => addToWatchlist(show)}>Add To Watchlist</Button>
       )}
     </>
   );

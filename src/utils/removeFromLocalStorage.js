@@ -1,9 +1,8 @@
-const removeFromLocalStorage = (image) => {
+const removeFromLocalStorage = (show) => {
   let watchlist = localStorage.getItem("watchlist");
   watchlist = JSON.parse(watchlist);
 
-  const index = watchlist.indexOf(image);
-  watchlist.splice(index, 1);
+  watchlist = watchlist.filter((savedShow) => savedShow.image !== show.image);
 
   localStorage.setItem("watchlist", JSON.stringify(watchlist));
 };
